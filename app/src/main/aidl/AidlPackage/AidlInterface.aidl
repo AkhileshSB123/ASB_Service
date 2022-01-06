@@ -12,6 +12,4 @@ interface AidlInterface {
         void playSong(int position);
          List<String> getAllAudio();
          List<String> getSongDetails(int position);
-       //  int getcposition();
-         //void seekToCall(int progress);
 }
