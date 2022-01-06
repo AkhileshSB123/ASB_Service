@@ -114,29 +114,8 @@ public class MediaService extends Service {
 
             String path = musicFiles.get(position).getPath();
             mediaPlayer=new MediaPlayer();
-            // Uri uri = Uri.parse(musicFiles.get(position).getPath());
-            // mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
-            try {
-                mediaPlayer.setDataSource(path);
-            } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
-                mediaPlayer.prepare();
-            } catch (IllegalStateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+             Uri uri = Uri.parse(musicFiles.get(position).getPath());
+             mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
             mediaPlayer.start();
             if(mediaPlayer.isPlaying()) {
                 System.out.println("playing");
@@ -150,7 +129,6 @@ public class MediaService extends Service {
             songDetails.add(musicFiles.get(position).getAlbum());  //songDetails list index 1 - album
             songDetails.add(musicFiles.get(position).getArtist());  //songDetails list index 2 - artist
             songDetails.add(String.valueOf(musicFiles.size()));  //songDetails list index 3 - count of song files
-            songDetails.add(String.valueOf(mediaPlayer.getDuration()));  //songDetails list index 4 - duration of song
 
             String uri =  musicFiles.get(position).getPath();
             System.out.println("uri"+uri);
