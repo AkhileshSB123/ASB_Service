@@ -71,7 +71,6 @@ public class MediaService extends Service {
             boolean playPauseStatus;
             System.out.println("call reached to service ");
             if(mediaPlayer.isPlaying()) {
-                //btn_play_pause.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                 mediaPlayer.pause();
                 playPauseStatus=true;
                 System.out.println("Media player paused "+playPauseStatus);
@@ -139,11 +138,8 @@ public class MediaService extends Service {
             retriever.release();
             if(art!=null) {
                 String str = new String(art);
-                //System.out.println("byte converted to string  : " + str);
                 songDetails.add(str); //songDetails list index 5 - cover art byte type converted to string
             }
-
-            //songDetails.add(String.valueOf(musicFiles.size()));//songDetails list index 5
             System.out.println("file size "+musicFiles.size());
             return songDetails;
         }
