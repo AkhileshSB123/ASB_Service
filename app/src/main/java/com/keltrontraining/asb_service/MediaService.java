@@ -125,12 +125,19 @@ public class MediaService extends Service {
         }
 
         @Override
+        public int getCurrentPosition() throws RemoteException {
+            return mediaPlayer.getCurrentPosition();
+        }
+
+        @Override
         public List<String> getSongDetails(int position) throws RemoteException {
             ArrayList<String> songDetails = new ArrayList<>(musicFiles.size());
             songDetails.add(musicFiles.get(position).getTitle());  //songDetails list index 0 - title
             songDetails.add(musicFiles.get(position).getAlbum());  //songDetails list index 1 - album
             songDetails.add(musicFiles.get(position).getArtist());  //songDetails list index 2 - artist
             songDetails.add(String.valueOf(musicFiles.size()));  //songDetails list index 3 - count of song files
+            songDetails.add(String.valueOf(mediaPlayer.getDuration()));
+
 
             String uri =  musicFiles.get(position).getPath();
             System.out.println("uri"+uri);
@@ -145,6 +152,11 @@ public class MediaService extends Service {
             }
             System.out.println("file size "+musicFiles.size());
             return songDetails;
+        }
+
+        @Override
+        public void seekToCall(int progress) throws RemoteException {
+            mediaPlayer.seekTo(progress);
         }
 
         public ArrayList<TrackInfo> getAllAudioFile(Context context) throws RemoteException {
