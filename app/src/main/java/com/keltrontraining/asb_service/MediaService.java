@@ -20,7 +20,6 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import AidlPackage.AidlInterface;
 
 public class MediaService extends Service {
     static MediaPlayer mediaPlayer;
-    static ArrayList<MusicFiles> musicFiles;
+    static ArrayList<TrackInfo> musicFiles;
     public MediaService(){
 
     }
@@ -48,6 +47,11 @@ public class MediaService extends Service {
         startForeground(1, notification);
 
         return START_STICKY;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel() {
@@ -101,6 +105,7 @@ public class MediaService extends Service {
             return songTitle;
 
         }
+
         @Override
         public void playSong(int position) throws RemoteException {
             System.out.println(" playSong() - call reached to service,  position: "+position);
@@ -110,11 +115,9 @@ public class MediaService extends Service {
                 mediaPlayer.stop();
                 mediaPlayer.release();
             }
-
-            String path = musicFiles.get(position).getPath();
             mediaPlayer=new MediaPlayer();
-             Uri uri = Uri.parse(musicFiles.get(position).getPath());
-             mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
+            Uri uri = Uri.parse(musicFiles.get(position).getPath());
+            mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
             mediaPlayer.start();
             if(mediaPlayer.isPlaying()) {
                 System.out.println("playing");
@@ -144,9 +147,9 @@ public class MediaService extends Service {
             return songDetails;
         }
 
-        public ArrayList<MusicFiles> getAllAudioFile(Context context) throws RemoteException {
+        public ArrayList<TrackInfo> getAllAudioFile(Context context) throws RemoteException {
             System.out.println(" getAllAudio() call reached to service ");
-            ArrayList<MusicFiles> tempAudioList = new ArrayList<>();
+            ArrayList<TrackInfo> tempAudioList = new ArrayList<>();
             Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             String[] projections = {
                     MediaStore.Audio.Media.ALBUM,
@@ -164,10 +167,10 @@ public class MediaService extends Service {
                     String path = cursor.getString(3);
                     String artist = cursor.getString(4);
 
-                    MusicFiles musicFiles = new MusicFiles(path, title, artist, album, duration);
+                    TrackInfo trackInfo = new TrackInfo(path, title, artist, album, duration);
                     // take log.e for check
                     Log.e("Path : " + path, "Album: " + album);
-                    tempAudioList.add(musicFiles);
+                    tempAudioList.add(trackInfo);
                 }
                 cursor.close();
             }

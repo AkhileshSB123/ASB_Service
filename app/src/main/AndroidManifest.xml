@@ -15,20 +15,21 @@
         android:theme="@style/Theme.ASB_Service">
         <service
             android:name=".MediaService"
+            android:stopWithTask="true"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="dataSync"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+             android:name=".MainActivity"
+             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="com.keltrontraining.asb_service"/>
                 <action android:name="com.keltrontraining.asb_service.AIDL"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-    </application>
+            </activity>
+          </application>
 
-</manifest>
+      </manifest>
